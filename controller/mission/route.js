@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const upload = require('../../config/multer').array('file',20)
 const update = require('../../config/multer').array('file',20)
 const middleware = require('../../middleware');
 const MissionController = require('./index')

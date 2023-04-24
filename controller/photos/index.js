@@ -1,6 +1,6 @@
 const Photos = require("./model");
 const validate = require("./validate");
-const removeMedia = require('../config/fs');
+const removeMedia = require('../../config/fs');
 
   exports.addPhoto = async function(req, res) {
     try{

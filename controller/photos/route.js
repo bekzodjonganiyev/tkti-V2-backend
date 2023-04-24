@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const upload = require('../config/multer').single('photo')
-const middleware = require('../middleware/index');
+const upload = require('../../config/multer').single('photo')
+const middleware = require('../../middleware/index');
 
-const { addPhoto, getById, getAll, updatePhoto, deletePhoto, SearchPhoto } = require('../constroller/photo')
+const { addPhoto, getById, getAll, updatePhoto, deletePhoto, SearchPhoto } = require('./index')
 
 router.post('/add', middleware.checkToken, (req, res, next) => {
     upload(req, res,  function (err) {
