@@ -2,7 +2,7 @@ const express = require('express')
 
 const Kafedra_dataController = require('./kafedra')
 const Kafedra_hodimController = require('./kafedra_hodim')
-const KafedraYonalishController = require('./kafedra_yonalish')
+const KafedraYonalishController = require('./Kafedra_yonalish')
 
 const KafedraRouter = express.Router()
 const KafedraHodimRouter = express.Router()
