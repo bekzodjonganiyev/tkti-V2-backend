@@ -46,6 +46,7 @@ app.use('/banner', require('./controller/banner/route'))
 app.use('/xalqaro_aloqa', require('./controller/xalqaro_aloqa/route'))
 app.use('/about_us', require('./controller/about_us/route'))
 app.use('/mission', require('./controller/mission/route'))
+app.use('/photo', require('./controller/photos/route'))
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 const PORT = process.env.PORT  || 5000;
