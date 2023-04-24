@@ -1,14 +1,13 @@
 const mongoose = require('mongoose')
 
 const PhotoSchema = mongoose.Schema({
-
-    title_uz: String,
-    title_ru: String,
-    title_en: String,
     width: String,
     height: String,
     photo: String,
-    date: String
+    date: {
+        type: Date,
+        default: new Date()
+    }
     
 
 
