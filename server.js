@@ -1,12 +1,14 @@
 const express = require('express')
 const cors = require('cors')
 const path = require('path')
-require('dotenv').config()
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config();
+  }  
 const app = express()
 const mongoose = require("mongoose")
 // mongoose.connect("mongodb+srv://masanov:masanov3167@cluster0.ss2bslz.mongodb.net/?retryWrites=true&w=majority", {useNewUrlParser: true}).then(()=>{console.log("success ")}).catch((err)=>{console.log(err)})
 mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true}).then(()=>{console.log("success ")}).catch((err)=>{console.log("error")})
-const PORT = process.env.PORT  || 5000;
+
 app.use(cors())
 app.use(express.json())
 
@@ -46,5 +48,7 @@ app.use('/about_us', require('./controller/about_us/route'))
 app.use('/mission', require('./controller/mission/route'))
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
-
-app.listen(PORT, console.log(`run server ${PORT} port`))
+const PORT = process.env.PORT  || 5000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  })
