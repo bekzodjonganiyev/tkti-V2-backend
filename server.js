@@ -5,7 +5,7 @@ require('dotenv').config()
 const app = express()
 const mongoose = require("mongoose")
 // mongoose.connect("mongodb+srv://masanov:masanov3167@cluster0.ss2bslz.mongodb.net/?retryWrites=true&w=majority", {useNewUrlParser: true}).then(()=>{console.log("success ")}).catch((err)=>{console.log(err)})
-mongoose.connect("mongodb://127.0.0.1:27017/tkti", {useNewUrlParser: true}).then(()=>{console.log("success ")}).catch((err)=>{console.log("error")})
+mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true}).then(()=>{console.log("success ")}).catch((err)=>{console.log("error")})
 const PORT = process.env.PORT  || 5000;
 app.use(cors())
 app.use(express.json())
