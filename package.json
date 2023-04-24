@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "serve -s build"
   },
   "engines": {
     "node": "18.13.0"
