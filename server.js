@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const path = require('path')
+const EmailSender = require("./controller/sendEmil")
 if (process.env.NODE_ENV !== "production") {
     require("dotenv").config();
   }  
@@ -47,6 +48,15 @@ app.use('/xalqaro_aloqa', require('./controller/xalqaro_aloqa/route'))
 app.use('/about_us', require('./controller/about_us/route'))
 app.use('/mission', require('./controller/mission/route'))
 app.use('/photo', require('./controller/photos/route'))
+app.post("/send", async (req, res) => {
+  try {
+    const { fullName,email,phone,message} = req.body
+    EmailSender({fullName,email,phone,message})
+    res.json({ msg: "Your message sent successfully" });
+  } catch (error) {
+    res.status(404).json({ msg: "Error ❌" });
+  }
+});
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 const PORT = process.env.PORT  || 5000;
