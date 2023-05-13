@@ -4,9 +4,6 @@ const upload = require('../config/multer').single('file')
 const middleware = require('../middleware');
 const MediaController = require('../controller/media')
 
-
-
-
 router.post('/add', middleware.checkToken, (req, res, next) => {
     upload(req, res,  function (err) {
     if (err || !req.file) {
@@ -16,7 +13,7 @@ router.post('/add', middleware.checkToken, (req, res, next) => {
     next()
     })
   }, MediaController.Add);
-router.get('/all', middleware.checkContentType, middleware.checkToken, MediaController.Get)
+router.get('/all', middleware.checkContentType, MediaController.Get)
 router.get('/remove/cashe', middleware.checkContentType, middleware.checkToken, MediaController.RemoveCasheFiles)
 router.get('/all-media', middleware.checkContentType, middleware.checkToken, MediaController.GetAll)
 router.get('/:id', middleware.checkParamsId, middleware.checkContentType, middleware.checkToken, MediaController.GetById)

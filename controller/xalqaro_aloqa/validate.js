@@ -10,6 +10,7 @@ class Validate {
     title_ru: joi.string().required(),
     title_en: joi.string().required(),    
     title_ar: joi.string().required(),
+    category: joi.string().required()
   });
 }
 
