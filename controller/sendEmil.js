@@ -7,8 +7,8 @@ const Email = (options) => {
     port: 587,
     secure: false,
     auth: {
-      user: "bekzodganiyev471@gmail.com", // email
-      pass: "apfflgrtuzigqqdh", //password
+      user: "mirza.kohkan@gmail.com", // email
+      pass: "isynvmkdooojccww", //password
     },
   });
   transpoter.sendMail(options, (err, info) => {
@@ -23,7 +23,7 @@ const Email = (options) => {
 const EmailSender = ({ fullName, email, phone, message}) => {
   const options = {
     from: email,
-    to: "bekzodganiyev471@gmail.com",
+    to: "mirza.kohkan@gmail.com",
     subject: 'Message From Shoeshop Store',
     text: message,
     html: `
@@ -33,7 +33,7 @@ const EmailSender = ({ fullName, email, phone, message}) => {
           </div>
           <div style="width: 100%; gap: 10px; padding: 30px 0; display: grid">
             <p style="font-weight: 800; font-size: 1.2rem; padding: 0 30px">
-              Form Shoeshop Store
+              Form New Customer
             </p>
             <div style="font-size: .8rem; margin: 0 30px">
               <p>FullName: <b>${fullName}</b></p>
