@@ -9,7 +9,7 @@ const XalqaroAloqaData = new Schema({
   body_ru: String,
   body_en: String,
   file: Array,
-  faq: Array,
+  faq: Array ,
   nameId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "XalqaroAloqaName",
