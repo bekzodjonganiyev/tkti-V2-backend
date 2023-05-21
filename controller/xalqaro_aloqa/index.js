@@ -1,90 +1,309 @@
+const { default: mongoose } = require("mongoose");
+const removeMedia = require("../../config/fs");
 const validate = require("./validate");
-const Model = require('./model');
+const { XalqaroAloqaDataSchema, XalqaroAloqaNameSchema } = require("./model");
 
-class XalqaroALoqa{
-    async Add(req, res) {
-        try{
-            const { error, value } = validate.post.validate({...req.body});
-            if(error){
-                res.status(403).json({status:403, message:String(error["details"][0].message)})
-                return
-            }
+class XalqaroAloqaName {
+  async Add(req, res) {
+    try {
+      const { error, value } = validate.postXalaqaroAloqaName.validate({
+        ...req.body,
+      });
 
-            const Stat = new Model(value);
-            await Stat.save();
+      if (error) {
+        res
+          .status(403)
+          .json({ status: 403, message: String(error["details"][0].message) });
+        return;
+      }
 
-            res.status(200).json({status:200,success:true, message:`Statistika qo'shildi`, data: Stat})
-        }
-        catch(e){
-            console.log(e);
-            res.status(500).json({status:500, message:'invalid request', success:false});
-        }
+      const names = new XalqaroAloqaNameSchema(value);
+      await names.save();
+
+      res.status(200).json({
+        status: 200,
+        success: true,
+        message: `Malumotlar qo'shildi`,
+        data: names,
+      });
+    } catch (e) {
+      console.log(e);
+      res
+        .status(500)
+        .json({ status: 500, message: "invalid request", success: false });
     }
+  }
 
-    async Edit(req, res) {
-        try{
-            const { error, value } = validate.post.validate({...req.body});
-            if(error){
-                res.status(403).json({status:403, message:String(error["details"][0].message)})
-                return
-            }
-    
-            const updated = await Model.findByIdAndUpdate(req.params.id, {...value}, {new:true});
+  async Edit(req, res) {
+    try {
+      const { value, error } = validate.postXalaqaroAloqaName.validate({
+        ...req.body,
+      });
 
-            if(!updated){
-                res.status(404).json({status:404, message:'Statistika topilmadi :('});
-                return
-            }
+      if (error) {
+        res
+          .status(403)
+          .json({ status: 403, message: String(error["details"][0].message) });
+        return;
+      }
+      const updated = await XalqaroAloqaNameSchema.findByIdAndUpdate(
+        req.params.id,
+        { ...value },
+        { new: true }
+      );
 
-            res.status(200).json({status:200,success:true, message:`Statistika yangilandi`, data: updated})
-        }
-        catch(e){
-            console.log(e);
-            res.status(500).json({status:500, message:'invalid request', success:false});
-        }
+      if (!updated) {
+        res
+          .status(404)
+          .json({ status: 404, message: "Malumotlar topilmadi :(" });
+        return;
+      }
+
+      res.status(200).json({
+        status: 200,
+        success: true,
+        message: `Muvaffaqiyatli tahrirlandi`,
+        data: updated,
+      });
+    } catch (e) {
+      res
+        .status(500)
+        .json({ status: 500, message: "invalid request", success: false });
     }
+  }
 
-    async Get(req, res) {
-        try{
-            // const {page, count} = req.query;
-            const Stat = await Model.find().sort({_id: -1});
-            res.status(200).json({status:200,success:true, message:`Yaxshi ukaaaaaa`, data: Stat})
-            // const resData = Stat.splice(page >1 ? Number(page) * (Number(count) ? count:10) - (Number(count) ? count : 10) : 0, (Number(count) ? count :10))
-            // const Stat = await (await Model.find().sort({_id: -1})).splice(page && page >1 ? Number(page) * (Number(count) ? count :10) - (Number(count) ? count :10) : 0, (Number(count) ? count :10))
-        }
-        catch(e){
-            res.status(500).json({status:500, message:'invalid request', success:false});
-        }
-    }
+  async Get(_, res) {
+    try {
+      const names = await XalqaroAloqaNameSchema.find().sort({ _id: -1 });
 
-    async GetById(req, res) {
-        try{
-            const Stat = await  Model.findOne({_id: req.params.id})
-             if(Stat.length <1){
-                    res.status(404).json({status:404, message:'Statistika id xato', success:false});
-                    return
-                }
-            res.status(200).json({status:200,success:true, message:`Yaxshi uka`, data: Stat})
-        }
-        catch(e){
-            res.status(500).json({status:500, message:'invalid request', success:false});
-        }
+      res.status(200).json({
+        status: 200,
+        success: true,
+        message: `Malumotlar olindi`,
+        data: names,
+      });
+    } catch (e) {
+      console.log(e);
+      res
+        .status(500)
+        .json({ status: 500, message: "invalid request", success: false });
     }
+  }
 
-    async Delete(req, res) {
-        try{            
-            const Stat = await Model.findByIdAndDelete(req.params.id);
-            if(!Stat){
-                res.status(404).json({status:404, message:'Statistika topilmadi :('});
-                return
-            }
- 
-            res.status(200).json({status:200,success:true, message:`Yaxshi  delet qilindi`, data: Stat})
-        }
-        catch(e){
-            res.status(500).json({status:500, message:'invalid request', success:false});
-        }
+  async GetById(req, res) {
+    try {
+      const nameById = await XalqaroAloqaNameSchema.aggregate([
+        { $match: { _id: mongoose.Types.ObjectId(req.params.id) } },
+        {
+          $lookup: {
+            from: "xalqaroaloqadatas",
+            localField: "_id",
+            foreignField: "nameId",
+            as: "child",
+          },
+        },
+      ]);
+      if (nameById.length < 1) {
+        res
+          .status(404)
+          .json({ status: 404, message: "nameId xato", success: false });
+        return;
+      }
+
+      res.status(200).json({
+        status: 200,
+        success: true,
+        message: `Yaxshi uka`,
+        data: nameById[0],
+      });
+    } catch (e) {
+      console.log(e);
+      res
+        .status(500)
+        .json({ status: 500, message: "invalid request", success: false });
     }
+  }
+
+  async Delete(req, res) {
+    try {
+      // name ni o'chirish
+      const name = await XalqaroAloqaNameSchema.findByIdAndDelete(
+        req.params.id
+      );
+
+      if (!name) {
+        res
+          .status(404)
+          .json({ status: 404, success: false, message: `nameId xato` });
+        return;
+      }
+
+      // shu namega tegishli datalarni o'chirish
+      await XalqaroAloqaDataSchema.deleteMany({ name_id: req.params.id });
+
+      res.status(200).json({
+        status: 200,
+        message: "Muvaffaqiyatli o'chirildi",
+        data: name,
+      });
+    } catch (e) {
+      res
+        .status(500)
+        .json({ status: 500, message: "invalid request", success: false });
+    }
+  }
 }
 
-module.exports = new XalqaroALoqa
+class XalqaroAloqaData {
+  async Add(req, res) {
+    try {
+      const { error, value } = validate.postXalaqaroAloqaData.validate({
+        ...req.body,
+      });
+      if (error) {
+        if (req.file) {
+          removeMedia(req.file.filename);
+        }
+        res
+          .status(403)
+          .json({ status: 403, message: String(error["details"][0].message) });
+        return;
+      }
+      const name = await XalqaroAloqaNameSchema.findOne({ _id: req.body.nameId });
+      if (!name) {
+        if (req.file) {
+          removeMedia(req.file.filename);
+        }
+        res.status(404).json({ status: 404, message: `nameId xato` });
+        return;
+      }
+
+      const obj = { ...value};
+      const files = [];
+      for (let i of req.files) {
+        files.push(`uploads/${i.filename}`);
+      }
+      obj.file = files;
+
+      const data = new XalqaroAloqaDataSchema(obj);
+      await data.save();
+
+      res.status(200).json({
+        status: 200,
+        success: true,
+        message: `Muvoffaqiyatli qo'shildi`,
+        data: obj,
+      });
+    } catch (e) {
+      console.log(e);
+      res
+        .status(500)
+        .json({ status: 500, message: "invalid request", success: false });
+    }
+  }
+
+  async Edit(req, res) {
+    try {
+      const { error, value } = validate.postXalaqaroAloqaData.validate({
+        ...req.body,
+      });
+      if (error) {
+        res
+          .status(403)
+          .json({ status: 403, message: String(error["details"][0].message) });
+        return;
+      }
+
+      const updated = await XalqaroAloqaDataSchema.findByIdAndUpdate(
+        req.params.id,
+        { ...value },
+        { new: true }
+      );
+
+      if (!updated) {
+        res.status(404).json({ status: 404, message: "Malumot topilmadi :(" });
+        return;
+      }
+
+      res.status(200).json({
+        status: 200,
+        success: true,
+        message: `Muvaffaqiyatli tahrirlandi`,
+        data: updated,
+      });
+    } catch (e) {
+      console.log(e);
+      res
+        .status(500)
+        .json({ status: 500, message: "invalid request", success: false });
+    }
+  }
+
+  async Get(_, res) {
+    try {
+      const datas = await XalqaroAloqaDataSchema.find().sort({ _id: -1 });
+
+      res.status(200).json({
+        status: 200,
+        success: true,
+        message: `Malumotlar olindi`,
+        data: datas,
+      });
+    } catch (e) {
+      console.log(e);
+      res
+        .status(500)
+        .json({ status: 500, message: "invalid request", success: false });
+    }
+  }
+
+  async GetById(req, res) {
+    try {
+      const data = await XalqaroAloqaDataSchema.findOne({ _id: req.params.id });
+      if (data.length < 1) {
+        res
+          .status(404)
+          .json({ status: 404, message: "dataId xato", success: false });
+        return;
+      }
+      res.status(200).json({
+        status: 200,
+        success: true,
+        message: `Yaxshi uka`,
+        data: data,
+      });
+    } catch (e) {
+      res
+        .status(500)
+        .json({ status: 500, message: "invalid request", success: false });
+    }
+  }
+
+  async Delete(req, res) {
+    try {
+      const data = await XalqaroAloqaDataSchema.findByIdAndDelete(
+        req.params.id
+      );
+      if (!data) {
+        res.status(404).json({ status: 404, message: "Malumot topilmadi :(" });
+        return;
+      }
+
+      res.status(200).json({
+        status: 200,
+        success: true,
+        message: `Muvaffaqiyatli o'chirildi`,
+        data: data,
+      });
+    } catch (e) {
+      res
+        .status(500)
+        .json({ status: 500, message: "invalid request", success: false });
+    }
+  }
+}
+
+const XalqaroAloqaNameController = new XalqaroAloqaName();
+const XalqaroAloqaDataController = new XalqaroAloqaData();
+
+module.exports = { XalqaroAloqaNameController, XalqaroAloqaDataController };
