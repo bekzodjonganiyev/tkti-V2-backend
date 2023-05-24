@@ -24,6 +24,11 @@ const {FaoliyatRouter, FaoliyatDataRouter} = require('./controller/faoliyat/rout
 const {KafedraRouter,KafedraHodimRouter,KafedraYonalishRouter} = require('./controller/kafedra/route')
 const {MarkazRouter, MarkazHodimRouter} = require('./controller/markaz/route');
 const { XalqaroAloqaNameRouter, XalqaroAloqaDataRouter } = require('./controller/xalqaro_aloqa/route');
+const { TalabalarNameRouter, TalabalarDataRouter } = require('./controller/talabalar/route');
+const { TalimNameRouter, TalimDataRouter } = require('./controller/talim/route');
+const { QabulNameRouter, QabulDataRouter } = require('./controller/qabulNew/route');
+const { MyTktiNameRouter, MyTktiDataRouter } = require('./controller/my_tkti/route');
+const { IlmiyTadNameRouter, IlmiyTadDataRouter } = require('./controller/ilmiy_tad/route');
 app.use('/elon', ElonRouter)
 app.use('/news', NewsRouter)
 app.use('/rektorat', require('./controller/rektorat/route'))
@@ -44,6 +49,16 @@ app.use('/faoliyat', FaoliyatRouter)
 app.use('/faoliyat_data', FaoliyatDataRouter)
 app.use('/xalqaro_aloqa', XalqaroAloqaNameRouter)
 app.use('/xalqaro_aloqa_child', XalqaroAloqaDataRouter)
+app.use('/talabalar', TalabalarNameRouter)
+app.use('/talabalar_child', TalabalarDataRouter)
+app.use('/talim', TalimNameRouter)
+app.use('/talim_child', TalimDataRouter)
+app.use('/qabul', QabulNameRouter)
+app.use('/qabul_child', QabulDataRouter)
+app.use('/my_tkti', MyTktiNameRouter)
+app.use('/my_tkti_child', MyTktiDataRouter)
+app.use('/ilmiy_tad', IlmiyTadNameRouter)
+app.use('/ilmiy_tad_child', IlmiyTadDataRouter)
 app.use('/auth', require('./controller/users/route'))
 app.use('/filter', require('./router/FilterRoutes'))
 app.use('/media', require('./router/media'))
