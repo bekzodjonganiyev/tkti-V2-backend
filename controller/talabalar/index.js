@@ -69,7 +69,7 @@ class TalabalarName {
     } catch (e) {
       res
         .status(500)
-        .json({ status: 500, message: "invalid request", success: false });
+        .json({ status: 500, message: "invalid request", success: false    });
     }
   }
 
