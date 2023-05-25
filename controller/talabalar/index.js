@@ -75,8 +75,16 @@ class TalabalarName {
 
   async Get(_, res) {
     try {
-      const names = await TalabalarNameSchema.find().sort({ _id: -1 });
-
+      const names = await TalabalarNameSchema.aggregate([
+        {
+          $lookup: {
+            from: "talabalardatas",
+            localField: "_id",
+            foreignField: "nameId",
+            as: "child",
+          },
+        },
+      ]);
       res.status(200).json({
         status: 200,
         success: true,

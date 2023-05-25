@@ -6,7 +6,7 @@ const { IlmiyTadDataSchema, IlmiyTadNameSchema } = require("./model");
 class IlmiyTadName {
   async Add(req, res) {
     try {
-      console.log(req.body)
+      console.log(req.body);
       const { error, value } = validate.postIlmiyTadName.validate({
         ...req.body,
       });
@@ -75,7 +75,16 @@ class IlmiyTadName {
 
   async Get(_, res) {
     try {
-      const names = await IlmiyTadNameSchema.find().sort({ _id: -1 });
+      const names = await IlmiyTadNameSchema.aggregate([
+        {
+          $lookup: {
+            from: "ilmiytaddatas",
+            localField: "_id",
+            foreignField: "nameId",
+            as: "child",
+          },
+        },
+      ]);
 
       res.status(200).json({
         status: 200,
@@ -97,7 +106,7 @@ class IlmiyTadName {
         { $match: { _id: mongoose.Types.ObjectId(req.params.id) } },
         {
           $lookup: {
-            from: "ilmiyTaddatas",
+            from: "ilmiytaddatas",
             localField: "_id",
             foreignField: "nameId",
             as: "child",
@@ -128,9 +137,7 @@ class IlmiyTadName {
   async Delete(req, res) {
     try {
       // name ni o'chirish
-      const name = await IlmiyTadNameSchema.findByIdAndDelete(
-        req.params.id
-      );
+      const name = await IlmiyTadNameSchema.findByIdAndDelete(req.params.id);
 
       if (!name) {
         res
@@ -179,7 +186,7 @@ class IlmiyTadData {
         return;
       }
 
-      const obj = { ...value};
+      const obj = { ...value };
       const files = [];
       for (let i of req.files) {
         files.push(`uploads/${i.filename}`);
@@ -282,9 +289,7 @@ class IlmiyTadData {
 
   async Delete(req, res) {
     try {
-      const data = await IlmiyTadDataSchema.findByIdAndDelete(
-        req.params.id
-      );
+      const data = await IlmiyTadDataSchema.findByIdAndDelete(req.params.id);
       if (!data) {
         res.status(404).json({ status: 404, message: "Malumot topilmadi :(" });
         return;

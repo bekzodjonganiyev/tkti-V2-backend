@@ -75,7 +75,16 @@ class MyTktiName {
 
   async Get(_, res) {
     try {
-      const names = await MyTktiNameSchema.find().sort({ _id: -1 });
+      const names = await MyTktiNameSchema.aggregate([
+        {
+          $lookup: {
+            from: "mytktidatas",
+            localField: "_id",
+            foreignField: "nameId",
+            as: "child",
+          },
+        },
+      ]);
 
       res.status(200).json({
         status: 200,

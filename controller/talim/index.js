@@ -75,8 +75,16 @@ class TalimName {
 
   async Get(_, res) {
     try {
-      const names = await TalimNameSchema.find().sort({ _id: -1 });
-
+      const names = await TalimNameSchema.aggregate([
+        {
+          $lookup: {
+            from: "talimdatas",
+            localField: "_id",
+            foreignField: "nameId",
+            as: "child",
+          },
+        },
+      ]);
       res.status(200).json({
         status: 200,
         success: true,
