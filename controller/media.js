@@ -102,15 +102,24 @@ class MediaController {
         .json({ status: 500, message: "invalid request", success: false });
     }
   }
-  async Get(_, res) {
+  async Get(req, res) {
     try {
+      const page = parseInt(req.query.page) || 1;
+      const perPage = 10;
+      const skip = (page - 1) * perPage;
+
       const Media = await Media_data.find().sort({ _id: -1 });
 
+      const items = Media.slice(skip, skip + perPage);
+
       res.status(200).json({
+        page,
+        perPage,
+        totalItems: Media.length,
         status: 200,
         success: true,
         message: `Yaxshi uka`,
-        data: Media,
+        data: items,
       });
     } catch (e) {
       console.log(e);
