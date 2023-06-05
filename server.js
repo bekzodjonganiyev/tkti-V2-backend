@@ -18,8 +18,8 @@ app.use(cors())
 app.use(express.json())
 
 const {BolimRouter, BolimHodimRouter} = require('./controller/bolim/route');
-const {ElonRouter,NewsRouter} = require('./controller/elonandnews/route');
-const {FakultetRouter, FakultetHodimRouter} = require('./controller/fakultet/route')
+const { NewsRouter } = require('./controller/news/route');
+const { FakultetRouter, FakultetHodimRouter} = require('./controller/fakultet/route')
 const {FaoliyatRouter, FaoliyatDataRouter} = require('./controller/faoliyat/route')
 const {KafedraRouter,KafedraHodimRouter,KafedraYonalishRouter} = require('./controller/kafedra/route')
 const {MarkazRouter, MarkazHodimRouter} = require('./controller/markaz/route');
@@ -29,7 +29,6 @@ const { TalimNameRouter, TalimDataRouter } = require('./controller/talim/route')
 const { QabulNameRouter, QabulDataRouter } = require('./controller/qabulNew/route');
 const { MyTktiNameRouter, MyTktiDataRouter } = require('./controller/my_tkti/route');
 const { IlmiyTadNameRouter, IlmiyTadDataRouter } = require('./controller/ilmiy_tad/route');
-app.use('/elon', ElonRouter)
 app.use('/news', NewsRouter)
 app.use('/rektorat', require('./controller/rektorat/route'))
 app.use('/daraja', require('./router/darajaRoutes'))

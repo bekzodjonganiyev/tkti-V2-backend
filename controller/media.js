@@ -5,7 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const { Fakultet_hodim } = require("./fakultet/model");
 const Banner = require("./banner/model");
-const { Elon_data, News_data } = require("./elonandnews/model");
+const { News_data } = require("./news/model");
 const { Bolim_hodim } = require("./bolim/model");
 const { Kafedra_hodim } = require("./kafedra/model");
 const { Markaz_hodim } = require("./markaz/model");
@@ -227,13 +227,13 @@ class MediaController {
       const BolimHodimPhotos = await Bolim_hodim.find();
       const etap2 = filterFunc(BolimHodimPhotos, etap1, "photo");
 
-      // // Elon rasmlari tekshirilyabti
-      const ElonPhotos = await Elon_data.find();
-      const etap3 = filterFunc(ElonPhotos, etap2, "photo");
+      // // // Elon rasmlari tekshirilyabti
+      // const ElonPhotos = await Elon_data.find();
+      // const etap3 = filterFunc(ElonPhotos, etap2, "photo");
 
       // // bannerdegi rasmlar tekshirilyabti
       const BannerPhotos = await Banner.find();
-      const etap4 = filterFunc(BannerPhotos, etap3, "banner_img");
+      const etap4 = filterFunc(BannerPhotos, etap2, "banner_img");
 
       // Kafedrani hodimlarini rasmlari tekshirilyabti
       const KafedraHodimPhotos = await Kafedra_hodim.find();

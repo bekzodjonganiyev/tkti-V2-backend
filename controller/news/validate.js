@@ -5,11 +5,10 @@ class Validate{
         title_uz: joi.string().min(3).required(),
         title_ru: joi.string().min(3).required(),
         title_en: joi.string().min(3).required(),
-        title_ar: joi.string().min(3).required(),
         body_uz: joi.required(),
         body_ru: joi.required(),
         body_en: joi.required(),
-        body_ar: joi.required(),
+        category: joi.string().min(3).required(),
         date: joi.string().required()
     })
 }
