@@ -8,7 +8,7 @@ class Validate{
         body_uz: joi.required(),
         body_ru: joi.required(),
         body_en: joi.required(),
-        category: joi.string().min(3).required(),
+        category: joi.string().min(3),
         date: joi.string().required()
     })
 }

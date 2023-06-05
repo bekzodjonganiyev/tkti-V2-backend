@@ -46,6 +46,7 @@ app.use('/kafedra_hodim', KafedraHodimRouter)
 app.use('/kafedra_yonalish', KafedraYonalishRouter)
 app.use('/faoliyat', FaoliyatRouter)
 app.use('/faoliyat_data', FaoliyatDataRouter)
+
 app.use('/xalqaro_aloqa', XalqaroAloqaNameRouter)
 app.use('/xalqaro_aloqa_child', XalqaroAloqaDataRouter)
 app.use('/talabalar', TalabalarNameRouter)
@@ -58,15 +59,18 @@ app.use('/my_tkti', MyTktiNameRouter)
 app.use('/my_tkti_child', MyTktiDataRouter)
 app.use('/ilmiy_tad', IlmiyTadNameRouter)
 app.use('/ilmiy_tad_child', IlmiyTadDataRouter)
+
 app.use('/auth', require('./controller/users/route'))
 app.use('/filter', require('./router/FilterRoutes'))
 app.use('/media', require('./router/media'))
 app.use('/student', require('./router/student'))
 app.use('/student_bolim', require('./router/studentbolim'))
 app.use('/statistic', require('./router/statistic'))
+
 app.use('/banner', require('./controller/banner/route'))
 app.use('/about_us', require('./controller/about_us/route'))
 app.use('/mission', require('./controller/mission/route'))
+
 app.use('/photo', require('./controller/photos/route'))
 app.post("/send", async (req, res) => {
   try {
