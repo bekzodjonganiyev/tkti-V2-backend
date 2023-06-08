@@ -147,7 +147,7 @@ class IlmiyTadName {
       }
 
       // shu namega tegishli datalarni o'chirish
-      await IlmiyTadDataSchema.deleteMany({ name_id: req.params.id });
+      await IlmiyTadDataSchema.deleteMany({ nameId: req.params.id });
 
       res.status(200).json({
         status: 200,

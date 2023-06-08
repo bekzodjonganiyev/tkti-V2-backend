@@ -40,6 +40,7 @@ class QabulName {
       const { value, error } = validate.postQabulName.validate({
         ...req.body,
       });
+      console.log(value, "edit qabul body")
 
       if (error) {
         res
@@ -52,6 +53,8 @@ class QabulName {
         { ...value },
         { new: true }
       );
+
+      console.log(updated, "edit qabul updated")
 
       if (!updated) {
         res
@@ -85,6 +88,8 @@ class QabulName {
           },
         },
       ]);
+
+      console.log(names, "get qabul names")
       res.status(200).json({
         status: 200,
         success: true,
@@ -112,6 +117,8 @@ class QabulName {
           },
         },
       ]);
+
+      console.log(nameById, "getById qabul")
       if (nameById.length < 1) {
         res
           .status(404)
@@ -140,6 +147,7 @@ class QabulName {
         req.params.id
       );
 
+      console.log(name, "delete qabul name")
       if (!name) {
         res
           .status(404)
@@ -148,7 +156,9 @@ class QabulName {
       }
 
       // shu namega tegishli datalarni o'chirish
-      await QabulDataSchema.deleteMany({ name_id: req.params.id });
+      await QabulDataSchema.deleteMany({ nameId: req.params.id });
+
+      console.log(req.params.id, "delete qabul many")
 
       res.status(200).json({
         status: 200,
@@ -169,6 +179,8 @@ class QabulData {
       const { error, value } = validate.postQabulData.validate({
         ...req.body,
       });
+
+      console.log(value, "qabul data value")
       if (error) {
         if (req.file) {
           removeMedia(req.file.filename);
@@ -179,6 +191,8 @@ class QabulData {
         return;
       }
       const name = await QabulNameSchema.findOne({ _id: req.body.nameId });
+
+      console.log(name, "qabul data nameId")
       if (!name) {
         if (req.file) {
           removeMedia(req.file.filename);
@@ -193,6 +207,8 @@ class QabulData {
         files.push(`uploads/${i.filename}`);
       }
       obj.file = files;
+
+      console.log(obj, "qabul data add data")
 
       const data = new QabulDataSchema(obj);
       await data.save();
@@ -229,6 +245,7 @@ class QabulData {
         { new: true }
       );
 
+      console.log(updated, "qabul data updated body")
       if (!updated) {
         res.status(404).json({ status: 404, message: "Malumot topilmadi :(" });
         return;
@@ -275,6 +292,8 @@ class QabulData {
           .json({ status: 404, message: "dataId xato", success: false });
         return;
       }
+
+      console.log(data, "qabul data getById")
       res.status(200).json({
         status: 200,
         success: true,
@@ -293,6 +312,8 @@ class QabulData {
       const data = await QabulDataSchema.findByIdAndDelete(
         req.params.id
       );
+
+      console.log(data, "qabul data byId")
       if (!data) {
         res.status(404).json({ status: 404, message: "Malumot topilmadi :(" });
         return;

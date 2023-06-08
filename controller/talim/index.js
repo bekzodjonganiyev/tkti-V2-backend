@@ -148,7 +148,7 @@ class TalimName {
       }
 
       // shu namega tegishli datalarni o'chirish
-      await TalimDataSchema.deleteMany({ name_id: req.params.id });
+      await TalimDataSchema.deleteMany({ nameId: req.params.id });
 
       res.status(200).json({
         status: 200,

@@ -148,7 +148,7 @@ class XalqaroAloqaName {
       }
 
       // shu namega tegishli datalarni o'chirish
-      await XalqaroAloqaDataSchema.deleteMany({ name_id: req.params.id });
+      await XalqaroAloqaDataSchema.deleteMany({ nameId: req.params.id });
 
       res.status(200).json({
         status: 200,
