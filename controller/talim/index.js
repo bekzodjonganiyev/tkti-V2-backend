@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const removeMedia = require("../../config/fs");
+const slug = require("../../config/slug");
 const validate = require("./validate");
 const { TalimDataSchema, TalimNameSchema } = require("./model");
 
@@ -102,7 +103,7 @@ class TalimName {
   async GetById(req, res) {
     try {
       const nameById = await TalimNameSchema.aggregate([
-        { $match: { _id: mongoose.Types.ObjectId(req.params.id) } },
+        // { $match: { _id: mongoose.Types.ObjectId(req.params.id) } },
         {
           $lookup: {
             from: "talimdatas",
@@ -119,12 +120,15 @@ class TalimName {
         return;
       }
 
+      const finded = nameById.find(item => slug(item.title_uz) == req.params.id)
+
       res.status(200).json({
         status: 200,
         success: true,
         message: `Yaxshi uka`,
-        data: nameById[0],
+        data: finded,
       });
+
     } catch (e) {
       console.log(e);
       res
@@ -268,18 +272,21 @@ class TalimData {
 
   async GetById(req, res) {
     try {
-      const data = await TalimDataSchema.findOne({ _id: req.params.id });
+      const data = await TalimDataSchema.find();
       if (data.length < 1) {
         res
           .status(404)
           .json({ status: 404, message: "dataId xato", success: false });
         return;
       }
+
+      const finded = data.find(item => slug(item.title_uz) == req.params.id)
+
       res.status(200).json({
         status: 200,
         success: true,
         message: `Yaxshi uka`,
-        data: data,
+        data: finded,
       });
     } catch (e) {
       res

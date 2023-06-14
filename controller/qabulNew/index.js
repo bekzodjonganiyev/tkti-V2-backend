@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const removeMedia = require("../../config/fs");
+const slug = require("../../config/slug");
 const validate = require("./validate");
 const { QabulDataSchema, QabulNameSchema } = require("./model");
 
@@ -107,7 +108,7 @@ class QabulName {
   async GetById(req, res) {
     try {
       const nameById = await QabulNameSchema.aggregate([
-        { $match: { _id: mongoose.Types.ObjectId(req.params.id) } },
+        // { $match: { _id: mongoose.Types.ObjectId(req.params.id) } },
         {
           $lookup: {
             from: "qabuldatas",
@@ -126,11 +127,13 @@ class QabulName {
         return;
       }
 
+      const finded = nameById.find(item =>slug(item.title_uz) == req.params.id)
+
       res.status(200).json({
         status: 200,
         success: true,
         message: `Yaxshi uka`,
-        data: nameById[0],
+        data: finded,
       });
     } catch (e) {
       console.log(e);
@@ -285,13 +288,22 @@ class QabulData {
 
   async GetById(req, res) {
     try {
-      const data = await QabulDataSchema.findOne({ _id: req.params.id });
+      const data = await QabulDataSchema.find();
       if (data.length < 1) {
         res
           .status(404)
           .json({ status: 404, message: "dataId xato", success: false });
         return;
       }
+
+      const finded = data.find(item => slug(item.title_uz) == req.params.id)
+
+      res.status(200).json({
+        status: 200,
+        success: true,
+        message: `Yaxshi uka`,
+        data: finded,
+      });
 
       console.log(data, "qabul data getById")
       res.status(200).json({

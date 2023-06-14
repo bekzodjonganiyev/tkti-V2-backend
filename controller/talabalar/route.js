@@ -22,7 +22,6 @@ TalabalarNameRouter.get(
 );
 TalabalarNameRouter.get(
   "/:id",
-  middleware.checkParamsId,
   middleware.checkContentType,
   TalabalarNameController.GetById
 );
@@ -68,7 +67,6 @@ TalabalarDataRouter.get(
 );
 TalabalarDataRouter.get(
   "/:id",
-  middleware.checkParamsId,
   middleware.checkContentType,
   TalabalarDataController.GetById
 );

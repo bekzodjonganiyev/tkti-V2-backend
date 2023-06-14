@@ -106,6 +106,14 @@ class RektoratController {
             as: "bolimlar",
           },
         },
+        {
+          $lookup: {
+            from: "markazs",
+            localField: "_id",
+            foreignField: "rektorat",
+            as: "markazlar",
+          },
+        },
       ]);
 
       res

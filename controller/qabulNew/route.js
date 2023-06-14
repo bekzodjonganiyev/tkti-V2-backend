@@ -22,7 +22,6 @@ QabulNameRouter.get(
 );
 QabulNameRouter.get(
   "/:id",
-  middleware.checkParamsId,
   middleware.checkContentType,
   QabulNameController.GetById
 );
@@ -68,7 +67,6 @@ QabulDataRouter.get(
 );
 QabulDataRouter.get(
   "/:id",
-  middleware.checkParamsId,
   middleware.checkContentType,
   QabulDataController.GetById
 );

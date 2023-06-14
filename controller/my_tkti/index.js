@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const removeMedia = require("../../config/fs");
+const slug = require("../../config/slug");
 const validate = require("./validate");
 const { MyTktiDataSchema, MyTktiNameSchema } = require("./model");
 
@@ -103,7 +104,7 @@ class MyTktiName {
   async GetById(req, res) {
     try {
       const nameById = await MyTktiNameSchema.aggregate([
-        { $match: { _id: mongoose.Types.ObjectId(req.params.id) } },
+        // { $match: { _id: mongoose.Types.ObjectId(req.params.id) } },
         {
           $lookup: {
             from: "mytktidatas",
@@ -120,11 +121,13 @@ class MyTktiName {
         return;
       }
 
+      const finded = nameById.find(item =>slug(item.title_uz) == req.params.id)
+
       res.status(200).json({
         status: 200,
         success: true,
         message: `Yaxshi uka`,
-        data: nameById[0],
+        data: finded,
       });
     } catch (e) {
       console.log(e);
@@ -269,18 +272,20 @@ class MyTktiData {
 
   async GetById(req, res) {
     try {
-      const data = await MyTktiDataSchema.findOne({ _id: req.params.id });
+      const data = await MyTktiDataSchema.find();
       if (data.length < 1) {
         res
           .status(404)
           .json({ status: 404, message: "dataId xato", success: false });
         return;
       }
+
+      const finded = data.find(item => slug(item.title_uz) == req.params.id)
       res.status(200).json({
         status: 200,
         success: true,
         message: `Yaxshi uka`,
-        data: data,
+        data: finded,
       });
     } catch (e) {
       res

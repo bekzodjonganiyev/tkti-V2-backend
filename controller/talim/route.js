@@ -22,7 +22,6 @@ TalimNameRouter.get(
 );
 TalimNameRouter.get(
   "/:id",
-  middleware.checkParamsId,
   middleware.checkContentType,
   TalimNameController.GetById
 );
@@ -68,7 +67,6 @@ TalimDataRouter.get(
 );
 TalimDataRouter.get(
   "/:id",
-  middleware.checkParamsId,
   middleware.checkContentType,
   TalimDataController.GetById
 );

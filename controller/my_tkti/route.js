@@ -22,7 +22,6 @@ MyTktiNameRouter.get(
 );
 MyTktiNameRouter.get(
   "/:id",
-  middleware.checkParamsId,
   middleware.checkContentType,
   MyTktiNameController.GetById
 );
@@ -68,7 +67,6 @@ MyTktiDataRouter.get(
 );
 MyTktiDataRouter.get(
   "/:id",
-  middleware.checkParamsId,
   middleware.checkContentType,
   MyTktiDataController.GetById
 );

@@ -22,7 +22,6 @@ XalqaroAloqaNameRouter.get(
 );
 XalqaroAloqaNameRouter.get(
   "/:id",
-  middleware.checkParamsId,
   middleware.checkContentType,
   XalqaroAloqaNameController.GetById
 );
@@ -68,7 +67,6 @@ XalqaroAloqaDataRouter.get(
 );
 XalqaroAloqaDataRouter.get(
   "/:id",
-  middleware.checkParamsId,
   middleware.checkContentType,
   XalqaroAloqaDataController.GetById
 );
