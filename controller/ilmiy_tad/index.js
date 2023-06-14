@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const removeMedia = require("../../config/fs");
+const slug = require("../../config/slug")
 const validate = require("./validate");
 const { IlmiyTadDataSchema, IlmiyTadNameSchema } = require("./model");
 
@@ -103,7 +104,7 @@ class IlmiyTadName {
   async GetById(req, res) {
     try {
       const nameById = await IlmiyTadNameSchema.aggregate([
-        { $match: { _id: mongoose.Types.ObjectId(req.params.id) } },
+        // { $match: { _id: mongoose.Types.ObjectId(req.params.id) } },
         {
           $lookup: {
             from: "ilmiytaddatas",
@@ -118,7 +119,12 @@ class IlmiyTadName {
           .status(404)
           .json({ status: 404, message: "nameId xato", success: false });
         return;
-      }
+      } 
+
+      const finded = nameById.find(item =>slug(item.title_uz) == req.params.id)
+
+
+      console.log(finded, "ilmiy test")
 
       res.status(200).json({
         status: 200,

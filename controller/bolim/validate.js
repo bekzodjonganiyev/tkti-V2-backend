@@ -21,7 +21,8 @@ class Validate{
         maqsad_ru: joi.required(),
         title_uz:  joi.string().min(3).required(),
         title_ru:  joi.string().min(3).required(),
-        title_en:  joi.string().min(3).required()
+        title_en:  joi.string().min(3).required(),
+        rektorat:  joi.string().min(3).required()
     })
 
 }

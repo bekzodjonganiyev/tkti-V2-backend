@@ -22,7 +22,6 @@ IlmiyTadNameRouter.get(
 );
 IlmiyTadNameRouter.get(
   "/:id",
-  middleware.checkParamsId,
   middleware.checkContentType,
   IlmiyTadNameController.GetById
 );
@@ -68,7 +67,6 @@ IlmiyTadDataRouter.get(
 );
 IlmiyTadDataRouter.get(
   "/:id",
-  middleware.checkParamsId,
   middleware.checkContentType,
   IlmiyTadDataController.GetById
 );
