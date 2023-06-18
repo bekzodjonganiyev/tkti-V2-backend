@@ -304,14 +304,6 @@ class QabulData {
         message: `Yaxshi uka`,
         data: finded,
       });
-
-      console.log(data, "qabul data getById")
-      res.status(200).json({
-        status: 200,
-        success: true,
-        message: `Yaxshi uka`,
-        data: data,
-      });
     } catch (e) {
       res
         .status(500)

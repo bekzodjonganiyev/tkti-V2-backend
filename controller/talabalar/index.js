@@ -288,12 +288,6 @@ class TalabalarData {
         message: `Yaxshi uka`,
         data: finded,
       });
-      res.status(200).json({
-        status: 200,
-        success: true,
-        message: `Yaxshi uka`,
-        data: data,
-      });
     } catch (e) {
       res
         .status(500)
