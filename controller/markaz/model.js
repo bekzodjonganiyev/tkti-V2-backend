@@ -12,7 +12,8 @@ const MarkazSchema = mongoose.Schema({
     date:{
         type:Date,
         default:Date.now()
-    }
+    },
+    rektorat: { type: mongoose.Schema.Types.ObjectId, ref: "Markaz" },
 });
 
 const MarkazHodimSchema = mongoose.Schema({

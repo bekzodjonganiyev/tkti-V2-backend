@@ -1,46 +1,46 @@
 const express = require("express");
-const XalqaroAloqaNameRouter = express.Router();
-const XalqaroAloqaDataRouter = express.Router();
+const TalimNameRouter = express.Router();
+const TalimDataRouter = express.Router();
 const {
-  XalqaroAloqaNameController,
-  XalqaroAloqaDataController,
+  TalimNameController,
+  TalimDataController,
 } = require("./index");
 const middleware = require("../../middleware");
 const upload = require("../../config/multer").array("file", 20);
 
 // Birinchi qavatdagi namelar uchun routerlar
-XalqaroAloqaNameRouter.post(
+TalimNameRouter.post(
   "/add",
   middleware.checkContentType,
   middleware.checkToken,
-  XalqaroAloqaNameController.Add
+  TalimNameController.Add
 );
-XalqaroAloqaNameRouter.get(
+TalimNameRouter.get(
   "/all",
   middleware.checkContentType,
-  XalqaroAloqaNameController.Get
+  TalimNameController.Get
 );
-XalqaroAloqaNameRouter.get(
+TalimNameRouter.get(
   "/:id",
   middleware.checkContentType,
-  XalqaroAloqaNameController.GetById
+  TalimNameController.GetById
 );
-XalqaroAloqaNameRouter.put(
+TalimNameRouter.put(
   "/:id",
   middleware.checkParamsId,
   middleware.checkToken,
-  XalqaroAloqaNameController.Edit
+  TalimNameController.Edit
 );
-XalqaroAloqaNameRouter.delete(
+TalimNameRouter.delete(
   "/:id",
   middleware.checkParamsId,
   middleware.checkContentType,
   middleware.checkToken,
-  XalqaroAloqaNameController.Delete
+  TalimNameController.Delete
 );
 
 // Ikkinichi qavatdagi data lar uchun routerlar lar(name larning child lari)
-XalqaroAloqaDataRouter.post(
+TalimDataRouter.post(
   "/add",
   middleware.checkToken,
   (req, res, next) => {
@@ -58,19 +58,19 @@ XalqaroAloqaDataRouter.post(
       next();
     });
   },
-  XalqaroAloqaDataController.Add
+  TalimDataController.Add
 );
-XalqaroAloqaDataRouter.get(
+TalimDataRouter.get(
   "/all",
   middleware.checkContentType,
-  XalqaroAloqaDataController.Get
+  TalimDataController.Get
 );
-XalqaroAloqaDataRouter.get(
+TalimDataRouter.get(
   "/:id",
   middleware.checkContentType,
-  XalqaroAloqaDataController.GetById
+  TalimDataController.GetById
 );
-XalqaroAloqaDataRouter.put(
+TalimDataRouter.put(
   "/:id",
   middleware.checkParamsId,
   middleware.checkToken,
@@ -89,14 +89,14 @@ XalqaroAloqaDataRouter.put(
       next();
     });
   },
-  XalqaroAloqaDataController.Edit
+  TalimDataController.Edit
 );
-XalqaroAloqaDataRouter.delete(
+TalimDataRouter.delete(
   "/:id",
   middleware.checkParamsId,
   middleware.checkContentType,
   middleware.checkToken,
-  XalqaroAloqaDataController.Delete
+  TalimDataController.Delete
 );
 
-module.exports = { XalqaroAloqaNameRouter, XalqaroAloqaDataRouter };
+module.exports = { TalimNameRouter, TalimDataRouter };

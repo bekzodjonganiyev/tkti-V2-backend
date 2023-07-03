@@ -1,46 +1,46 @@
 const express = require("express");
-const XalqaroAloqaNameRouter = express.Router();
-const XalqaroAloqaDataRouter = express.Router();
+const MyTktiNameRouter = express.Router();
+const MyTktiDataRouter = express.Router();
 const {
-  XalqaroAloqaNameController,
-  XalqaroAloqaDataController,
+  MyTktiNameController,
+  MyTktiDataController,
 } = require("./index");
 const middleware = require("../../middleware");
 const upload = require("../../config/multer").array("file", 20);
 
 // Birinchi qavatdagi namelar uchun routerlar
-XalqaroAloqaNameRouter.post(
+MyTktiNameRouter.post(
   "/add",
   middleware.checkContentType,
   middleware.checkToken,
-  XalqaroAloqaNameController.Add
+  MyTktiNameController.Add
 );
-XalqaroAloqaNameRouter.get(
+MyTktiNameRouter.get(
   "/all",
   middleware.checkContentType,
-  XalqaroAloqaNameController.Get
+  MyTktiNameController.Get
 );
-XalqaroAloqaNameRouter.get(
+MyTktiNameRouter.get(
   "/:id",
   middleware.checkContentType,
-  XalqaroAloqaNameController.GetById
+  MyTktiNameController.GetById
 );
-XalqaroAloqaNameRouter.put(
+MyTktiNameRouter.put(
   "/:id",
   middleware.checkParamsId,
   middleware.checkToken,
-  XalqaroAloqaNameController.Edit
+  MyTktiNameController.Edit
 );
-XalqaroAloqaNameRouter.delete(
+MyTktiNameRouter.delete(
   "/:id",
   middleware.checkParamsId,
   middleware.checkContentType,
   middleware.checkToken,
-  XalqaroAloqaNameController.Delete
+  MyTktiNameController.Delete
 );
 
 // Ikkinichi qavatdagi data lar uchun routerlar lar(name larning child lari)
-XalqaroAloqaDataRouter.post(
+MyTktiDataRouter.post(
   "/add",
   middleware.checkToken,
   (req, res, next) => {
@@ -58,19 +58,19 @@ XalqaroAloqaDataRouter.post(
       next();
     });
   },
-  XalqaroAloqaDataController.Add
+  MyTktiDataController.Add
 );
-XalqaroAloqaDataRouter.get(
+MyTktiDataRouter.get(
   "/all",
   middleware.checkContentType,
-  XalqaroAloqaDataController.Get
+  MyTktiDataController.Get
 );
-XalqaroAloqaDataRouter.get(
+MyTktiDataRouter.get(
   "/:id",
   middleware.checkContentType,
-  XalqaroAloqaDataController.GetById
+  MyTktiDataController.GetById
 );
-XalqaroAloqaDataRouter.put(
+MyTktiDataRouter.put(
   "/:id",
   middleware.checkParamsId,
   middleware.checkToken,
@@ -89,14 +89,14 @@ XalqaroAloqaDataRouter.put(
       next();
     });
   },
-  XalqaroAloqaDataController.Edit
+  MyTktiDataController.Edit
 );
-XalqaroAloqaDataRouter.delete(
+MyTktiDataRouter.delete(
   "/:id",
   middleware.checkParamsId,
   middleware.checkContentType,
   middleware.checkToken,
-  XalqaroAloqaDataController.Delete
+  MyTktiDataController.Delete
 );
 
-module.exports = { XalqaroAloqaNameRouter, XalqaroAloqaDataRouter };
+module.exports = { MyTktiNameRouter, MyTktiDataRouter };

@@ -1,7 +1,7 @@
 const joi = require("joi");
 
 class Validate {
-  postXalaqaroAloqaData = joi.object().keys({
+  postMyTktiData = joi.object().keys({
     body_uz: joi.string().min(5).required(),
     body_ru: joi.string().min(5).required(),
     body_en: joi.string().min(5).required(),
@@ -12,7 +12,7 @@ class Validate {
     faq:  joi.string()
   });
 
-  postXalaqaroAloqaName = joi.object().keys({
+  postMyTktiName = joi.object().keys({
     title_uz: joi.string().min(5).required(),
     title_ru: joi.string().min(5).required(),
     title_en: joi.string().min(5).required(),

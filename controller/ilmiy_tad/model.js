@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const XalqaroAloqaData = new Schema({
+const IlmiyTadData = new Schema({
   title_uz: String,
   title_ru: String,
   title_en: String,
@@ -12,7 +12,7 @@ const XalqaroAloqaData = new Schema({
   faq: Array ,
   nameId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "XalqaroAloqaName",
+    ref: "IlmiyTadName",
     required: true,
   },
   date: {
@@ -21,7 +21,7 @@ const XalqaroAloqaData = new Schema({
   },
 });
 
-const XalqaroAloqaName = new Schema({
+const IlmiyTadName = new Schema({
   title_uz: String,
   title_ru: String,
   title_en: String,
@@ -31,13 +31,13 @@ const XalqaroAloqaName = new Schema({
   },
 });
 
-const XalqaroAloqaDataSchema = mongoose.model(
-  "XalqaroAloqaData",
-  XalqaroAloqaData
+const IlmiyTadDataSchema = mongoose.model(
+  "IlmiyTadData",
+  IlmiyTadData
 );
-const XalqaroAloqaNameSchema = mongoose.model(
-  "XalqaroAloqaName",
-  XalqaroAloqaName
+const IlmiyTadNameSchema = mongoose.model(
+  "IlmiyTadName",
+  IlmiyTadName
 );
 
-module.exports = { XalqaroAloqaDataSchema, XalqaroAloqaNameSchema };
+module.exports = { IlmiyTadDataSchema, IlmiyTadNameSchema };

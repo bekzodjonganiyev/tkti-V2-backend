@@ -2,12 +2,13 @@ const { default: mongoose } = require("mongoose");
 const removeMedia = require("../../config/fs");
 const slug = require("../../config/slug");
 const validate = require("./validate");
-const { XalqaroAloqaDataSchema, XalqaroAloqaNameSchema } = require("./model");
+const { QabulDataSchema, QabulNameSchema } = require("./model");
 
-class XalqaroAloqaName {
+class QabulName {
   async Add(req, res) {
     try {
-      const { error, value } = validate.postXalaqaroAloqaName.validate({
+      console.log(req.body)
+      const { error, value } = validate.postQabulName.validate({
         ...req.body,
       });
 
@@ -18,7 +19,7 @@ class XalqaroAloqaName {
         return;
       }
 
-      const names = new XalqaroAloqaNameSchema(value);
+      const names = new QabulNameSchema(value);
       await names.save();
 
       res.status(200).json({
@@ -37,9 +38,10 @@ class XalqaroAloqaName {
 
   async Edit(req, res) {
     try {
-      const { value, error } = validate.postXalaqaroAloqaName.validate({
+      const { value, error } = validate.postQabulName.validate({
         ...req.body,
       });
+      console.log(value, "edit qabul body")
 
       if (error) {
         res
@@ -47,11 +49,13 @@ class XalqaroAloqaName {
           .json({ status: 403, message: String(error["details"][0].message) });
         return;
       }
-      const updated = await XalqaroAloqaNameSchema.findByIdAndUpdate(
+      const updated = await QabulNameSchema.findByIdAndUpdate(
         req.params.id,
         { ...value },
         { new: true }
       );
+
+      console.log(updated, "edit qabul updated")
 
       if (!updated) {
         res
@@ -75,10 +79,10 @@ class XalqaroAloqaName {
 
   async Get(_, res) {
     try {
-      const names = await XalqaroAloqaNameSchema.aggregate([
+      const names = await QabulNameSchema.aggregate([
         {
           $lookup: {
-            from: "xalqaroaloqadatas",
+            from: "qabuldatas",
             localField: "_id",
             foreignField: "nameId",
             as: "child",
@@ -86,6 +90,7 @@ class XalqaroAloqaName {
         },
       ]);
 
+      console.log(names, "get qabul names")
       res.status(200).json({
         status: 200,
         success: true,
@@ -102,17 +107,19 @@ class XalqaroAloqaName {
 
   async GetById(req, res) {
     try {
-      const nameById = await XalqaroAloqaNameSchema.aggregate([
+      const nameById = await QabulNameSchema.aggregate([
         // { $match: { _id: mongoose.Types.ObjectId(req.params.id) } },
         {
           $lookup: {
-            from: "xalqaroaloqadatas",
+            from: "qabuldatas",
             localField: "_id",
             foreignField: "nameId",
             as: "child",
           },
         },
       ]);
+
+      console.log(nameById, "getById qabul")
       if (nameById.length < 1) {
         res
           .status(404)
@@ -120,7 +127,7 @@ class XalqaroAloqaName {
         return;
       }
 
-      const finded = nameById.find(item => slug(item.title_uz) == req.params.id)
+      const finded = nameById.find(item =>slug(item.title_uz) == req.params.id)
 
       res.status(200).json({
         status: 200,
@@ -128,7 +135,6 @@ class XalqaroAloqaName {
         message: `Yaxshi uka`,
         data: finded,
       });
-
     } catch (e) {
       console.log(e);
       res
@@ -140,10 +146,11 @@ class XalqaroAloqaName {
   async Delete(req, res) {
     try {
       // name ni o'chirish
-      const name = await XalqaroAloqaNameSchema.findByIdAndDelete(
+      const name = await QabulNameSchema.findByIdAndDelete(
         req.params.id
       );
 
+      console.log(name, "delete qabul name")
       if (!name) {
         res
           .status(404)
@@ -152,7 +159,9 @@ class XalqaroAloqaName {
       }
 
       // shu namega tegishli datalarni o'chirish
-      await XalqaroAloqaDataSchema.deleteMany({ nameId: req.params.id });
+      await QabulDataSchema.deleteMany({ nameId: req.params.id });
+
+      console.log(req.params.id, "delete qabul many")
 
       res.status(200).json({
         status: 200,
@@ -167,12 +176,14 @@ class XalqaroAloqaName {
   }
 }
 
-class XalqaroAloqaData {
+class QabulData {
   async Add(req, res) {
     try {
-      const { error, value } = validate.postXalaqaroAloqaData.validate({
+      const { error, value } = validate.postQabulData.validate({
         ...req.body,
       });
+
+      console.log(value, "qabul data value")
       if (error) {
         if (req.file) {
           removeMedia(req.file.filename);
@@ -182,7 +193,9 @@ class XalqaroAloqaData {
           .json({ status: 403, message: String(error["details"][0].message) });
         return;
       }
-      const name = await XalqaroAloqaNameSchema.findOne({ _id: req.body.nameId });
+      const name = await QabulNameSchema.findOne({ _id: req.body.nameId });
+
+      console.log(name, "qabul data nameId")
       if (!name) {
         if (req.file) {
           removeMedia(req.file.filename);
@@ -198,7 +211,9 @@ class XalqaroAloqaData {
       }
       obj.file = files;
 
-      const data = new XalqaroAloqaDataSchema(obj);
+      console.log(obj, "qabul data add data")
+
+      const data = new QabulDataSchema(obj);
       await data.save();
 
       res.status(200).json({
@@ -217,7 +232,7 @@ class XalqaroAloqaData {
 
   async Edit(req, res) {
     try {
-      const { error, value } = validate.postXalaqaroAloqaData.validate({
+      const { error, value } = validate.postQabulData.validate({
         ...req.body,
       });
       if (error) {
@@ -227,12 +242,13 @@ class XalqaroAloqaData {
         return;
       }
 
-      const updated = await XalqaroAloqaDataSchema.findByIdAndUpdate(
+      const updated = await QabulDataSchema.findByIdAndUpdate(
         req.params.id,
         { ...value },
         { new: true }
       );
 
+      console.log(updated, "qabul data updated body")
       if (!updated) {
         res.status(404).json({ status: 404, message: "Malumot topilmadi :(" });
         return;
@@ -254,7 +270,7 @@ class XalqaroAloqaData {
 
   async Get(_, res) {
     try {
-      const datas = await XalqaroAloqaDataSchema.find().sort({ _id: -1 });
+      const datas = await QabulDataSchema.find().sort({ _id: -1 });
 
       res.status(200).json({
         status: 200,
@@ -272,7 +288,7 @@ class XalqaroAloqaData {
 
   async GetById(req, res) {
     try {
-      const data = await XalqaroAloqaDataSchema.find();
+      const data = await QabulDataSchema.find();
       if (data.length < 1) {
         res
           .status(404)
@@ -297,9 +313,11 @@ class XalqaroAloqaData {
 
   async Delete(req, res) {
     try {
-      const data = await XalqaroAloqaDataSchema.findByIdAndDelete(
+      const data = await QabulDataSchema.findByIdAndDelete(
         req.params.id
       );
+
+      console.log(data, "qabul data byId")
       if (!data) {
         res.status(404).json({ status: 404, message: "Malumot topilmadi :(" });
         return;
@@ -319,7 +337,7 @@ class XalqaroAloqaData {
   }
 }
 
-const XalqaroAloqaNameController = new XalqaroAloqaName();
-const XalqaroAloqaDataController = new XalqaroAloqaData();
+const QabulNameController = new QabulName();
+const QabulDataController = new QabulData();
 
-module.exports = { XalqaroAloqaNameController, XalqaroAloqaDataController };
+module.exports = { QabulNameController, QabulDataController };

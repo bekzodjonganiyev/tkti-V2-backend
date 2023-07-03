@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const XalqaroAloqaData = new Schema({
+const MyTktiData = new Schema({
   title_uz: String,
   title_ru: String,
   title_en: String,
@@ -12,7 +12,7 @@ const XalqaroAloqaData = new Schema({
   faq: Array ,
   nameId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "XalqaroAloqaName",
+    ref: "MyTktiName",
     required: true,
   },
   date: {
@@ -21,7 +21,7 @@ const XalqaroAloqaData = new Schema({
   },
 });
 
-const XalqaroAloqaName = new Schema({
+const MyTktiName = new Schema({
   title_uz: String,
   title_ru: String,
   title_en: String,
@@ -31,13 +31,13 @@ const XalqaroAloqaName = new Schema({
   },
 });
 
-const XalqaroAloqaDataSchema = mongoose.model(
-  "XalqaroAloqaData",
-  XalqaroAloqaData
+const MyTktiDataSchema = mongoose.model(
+  "MyTktiData",
+  MyTktiData
 );
-const XalqaroAloqaNameSchema = mongoose.model(
-  "XalqaroAloqaName",
-  XalqaroAloqaName
+const MyTktiNameSchema = mongoose.model(
+  "MyTktiName",
+  MyTktiName
 );
 
-module.exports = { XalqaroAloqaDataSchema, XalqaroAloqaNameSchema };
+module.exports = { MyTktiDataSchema, MyTktiNameSchema };
