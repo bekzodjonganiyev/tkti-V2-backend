@@ -24,7 +24,7 @@ const EmailSender = ({ fullName, email, phone, message}) => {
   const options = {
     from: email,
     to: "mirza.kohkan@gmail.com",
-    subject: 'Message From Shoeshop Store',
+    subject: 'From New User',
     text: message,
     html: `
         <div style="width: 100%; background-color: #f3f9ff; padding: 5rem 0">
@@ -33,7 +33,7 @@ const EmailSender = ({ fullName, email, phone, message}) => {
           </div>
           <div style="width: 100%; gap: 10px; padding: 30px 0; display: grid">
             <p style="font-weight: 800; font-size: 1.2rem; padding: 0 30px">
-              Form New Customer
+              From new customer
             </p>
             <div style="font-size: .8rem; margin: 0 30px">
               <p>FullName: <b>${fullName}</b></p>
